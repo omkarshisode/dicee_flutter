@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 void main() {
@@ -25,7 +27,24 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class Dicee extends StatelessWidget {
+class Dicee extends StatefulWidget {
+  const Dicee({super.key});
+
+  @override
+  State<Dicee> createState() => _DiceeState();
+}
+
+class _DiceeState extends State<Dicee> {
+  int leftDiceNumber = 1;
+  int rightDiceNumber = 1;
+
+  void changeDiceFace() {
+    setState(() {
+      rightDiceNumber = getRandomNumber();
+      leftDiceNumber = getRandomNumber();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -36,18 +55,19 @@ class Dicee extends StatelessWidget {
             padding: const EdgeInsets.all(16.0),
             child: InkWell(
               onTap: () {
-                print("Left button got pressed");
+                changeDiceFace();
               },
-              child: Image.asset('images/dice1.png'),
+              child: Image.asset('images/dice$leftDiceNumber.png'),
             ),
           )),
           Expanded(
               child: Padding(
             padding: const EdgeInsets.all(16.0),
-            child:
-                InkWell(onTap: () {
-                  print("Right button got pressed");
-                }, child: Image.asset('images/dice1.png')),
+            child: InkWell(
+                onTap: () {
+                  changeDiceFace();
+                },
+                child: Image.asset('images/dice$rightDiceNumber.png')),
           ))
         ],
       ),
@@ -55,8 +75,8 @@ class Dicee extends StatelessWidget {
   }
 }
 
-void changeImage(){
-  print("Image Changed");
+// get the random in range of 1 to 6
+int getRandomNumber() {
+  var random = Random();
+  return random.nextInt(6) + 1;
 }
-
-
